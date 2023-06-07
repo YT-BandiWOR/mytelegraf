@@ -1,0 +1,27 @@
+$telegram-icon-url: url('/telegram-icon.svg');
+$close-icon-url: url('/close-icon.png');
+$burger-menu-icon-url: url('/burger-menu-icon.png');
+$error-icon-url: url('/error-icon.png');
+$info-icon-url: url('/info-icon.png');
+$background-main-color: #333336;
+
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: 'Roboto', sans-serif;
+}
+
+body::-webkit-scrollbar {
+    width: .5vw;
+}
+
+body::-webkit-scrollbar-track {
+    background: $background-main-color;
+}
+
+body::-webkit-scrollbar-thumb {
+    background: rgba(255,255,255,.4);
+    border-radius: 10px;
+    box-shadow: 0 0 5px rgba(0,0,0,.5);
+}
