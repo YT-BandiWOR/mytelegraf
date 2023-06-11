@@ -23,6 +23,11 @@ const RegisterPage: React.FC = () => {
             return;
         }
 
+        if (!username || !email || !password || !repeatPassword) {
+            setError('Заполните все поля ввода.');
+            return;
+        }
+
         setLoading(true);
 
         const registerRequest = async () => {
@@ -44,7 +49,7 @@ const RegisterPage: React.FC = () => {
             }
         }
 
-        registerRequest();
+        registerRequest().catch(r=>console.error(r));
     }
 
     return (

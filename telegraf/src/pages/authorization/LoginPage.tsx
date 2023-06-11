@@ -6,12 +6,18 @@ import cookie from "../../utils/cookie.ts";
 import {TAPIError} from "../../api/types.ts";
 import FullscreenModal from "../../components/modal/FullScreenBlocker.tsx";
 import {Link} from "react-router-dom";
+import {setUser} from "../../redux/userSlice.ts";
+import {useDispatch} from "react-redux";
+import {useNavigate} from "react-router-dom";
+
 
 const LoginPage: React.FC = () => {
     const [username, setUsername] = useState<string>('');
     const [password, setPassword] = useState<string>('');
     const [loading, setLoading] = useState<boolean>(false);
     const [error, setError] = useState<string | null>(null);
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     useEffect(() => {
         const reg_data = storage(sessionStorage).pop('reg_data');
@@ -24,17 +30,23 @@ const LoginPage: React.FC = () => {
 
     const onFormSubmit = (ev: React.FormEvent<HTMLFormElement>): void => {
         ev.preventDefault();
+
+        if (!password || !username) {
+            setError('Введите Имя пользователя и Пароль.');
+            return;
+        }
+
         setLoading(true);
 
         const loginRequest = async () => {
             try {
                 const response = await telegrafAPI().login(username, password);
-                console.log('res', response.data)
-
                 cookie.setToken('access_token', response.data.token);
                 storage().setToken('refresh_token', response.data.refreshToken);
 
-                location.replace(location.origin + '/');
+                const getMeResponse = await telegrafAPI().me();
+                dispatch(setUser(getMeResponse.data.user));
+                navigate('/');
 
             } catch (error) {
                 if (error instanceof TAPIError) {
@@ -50,7 +62,7 @@ const LoginPage: React.FC = () => {
             setLoading(false);
         }
 
-        loginRequest();
+        loginRequest().catch(r=>console.error(r));
     }
 
     return (

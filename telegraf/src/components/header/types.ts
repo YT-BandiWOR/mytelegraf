@@ -22,6 +22,6 @@ export interface HeaderOpenLinks {
     setOpened: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-export interface HeaderInterface {
-    account: DbUser | null
-}
+export type ReactSetStateType<T> = React.Dispatch<React.SetStateAction<T>>
+
+export type ReactStatePairType<T> = [T, ReactSetStateType<T>]
